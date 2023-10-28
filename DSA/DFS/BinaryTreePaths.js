@@ -6,13 +6,36 @@
  *     this.right = (right===undefined ? null : right)
  * }
  */
+
+// Function to find all root-to-leaf paths in a binary tree
 var binaryTreePaths = function(root) {
-    let allAr = [];
-    getPath(root);
-    function getPath(node,arr=[]){
-        (!node.left && !node.right) &&allAr.push([...arr, node.val]);        
-        node.left && getPath(node.left, [...arr,node.val]);
-        node.right && getPath(node.right, [...arr,node.val]);      
+    // Initialize an array to store all paths
+    let allPaths = [];
+
+    // Recursive function to find paths
+    function findPaths(node, path = []) {
+        // If the node is a leaf node, add the path to allPaths
+        if (!node.left && !node.right) {
+            allPaths.push([...path, node.val]);
+            return;
+        }
+
+        // If the left child exists, recursively find paths for the left subtree
+        if (node.left) {
+            findPaths(node.left, [...path, node.val]);
+        }
+
+        // If the right child exists, recursively find paths for the right subtree
+        if (node.right) {
+            findPaths(node.right, [...path, node.val]);
+        }
     }
-    return allAr.map((a)=>a.join('->'));
+
+    // Check if the root exists before calling the recursive function
+    if (root) {
+        findPaths(root);
+    }
+
+    // Map all paths to a string format
+    return allPaths.map((path) => path.join('->'));
 };
